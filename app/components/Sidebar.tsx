@@ -17,7 +17,7 @@ interface SideBarPops{
                 <h1 className="text-white">Blog Post Platform</h1>
             </div>
                 {/* Links */}
-                <div className="m-20 flex-grow">
+                <div className="m-16 flex-grow">
                     <ul className="text-white space-y-10 items-start justify-between flex flex-col">
                         <li className="flex flex-row">
                         <FaHome className="mx-2 h-6 "/>

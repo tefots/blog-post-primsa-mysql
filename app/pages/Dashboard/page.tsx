@@ -3,6 +3,8 @@
 import NavBar from "@/app/components/NavBar";
 import SideBar from "@/app/components/Sidebar";
 import { useState } from "react";
+import AllPosts from "../AllPosts/page";
+import CreatePost from "../CreatePost/page";
 
 const DashBoard: React.FC = () =>{
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -16,10 +18,16 @@ const DashBoard: React.FC = () =>{
             <SideBar isOpen={isSidebarOpen} toggleSideBar={toggleSideBar}/>
         
 
-        {/* navbar */}
-        <section className="flex flex-col flex-1">
-            <NavBar toggleSideBar={toggleSideBar}/>
-        </section>
+            {/* Main Content Area */}
+            <div className="flex flex-1 flex-col h-full overflow-auto">
+                {/* Navbar */}
+                <NavBar toggleSideBar={toggleSideBar} />
+
+                {/* Content - Responsive layout for posts */}
+                <main className="flex-1 overflow-auto p-4">
+                    <AllPosts />
+                </main>
+            </div>
 
         {/* overlay for sidebar on small screens */}
         {isSidebarOpen && (
