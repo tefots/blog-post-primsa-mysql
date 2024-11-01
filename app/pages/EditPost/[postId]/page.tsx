@@ -1,84 +1,93 @@
-// app/EditPost/[postId]/page.tsx
-"use client";
+// pages/EditPost/[id].tsx
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
-import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+export default function EditPost() {
+    const router = useRouter();
+    const { id } = router.query; // Get the post ID from the URL
+    const [post, setPost] = useState<{ title: string; content: string } | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
-interface Post {
-    id: number;
-    title: string;
-    content: string;
-}
-
-interface UpdatePostProps {
-    onUpdate: (id: number, title: string, content: string) => void;
-    onCancel: () => void;
-}
-
-// Component function for the edit page
-export default function EditPost({ onUpdate, onCancel }: UpdatePostProps) {
-    const { postId } = useParams(); // Get the postId from the dynamic route
-    const [post, setPost] = useState<Post | null>(null);
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
-
-    // Fetch or set the post based on postId
     useEffect(() => {
-        // Assuming a fetchPost function retrieves post data by postId
-        async function fetchPost() {
-            const response = await fetch(`/api/posts/${postId}`);
-            const postData = await response.json();
-            setPost(postData);
-            setTitle(postData.title);
-            setContent(postData.content);
-        }
-        if (postId) fetchPost();
-    }, [postId]);
+        // Fetch the existing post data when the component mounts
+        const fetchPost = async () => {
+            if (id) {
+                try {
+                    const response = await fetch(`/api/posts/${id}`);
+                    const data = await response.json();
 
-    const handleSubmit = (e: React.FormEvent) => {
+                    if (response.ok) {
+                        setPost(data.post); // Assume your API returns { post: { title, content } }
+                    } else {
+                        setError(data.message || 'Error fetching post');
+                    }
+                } catch (error) {
+                    setError('Error fetching post');
+                } finally {
+                    setLoading(false);
+                }
+            }
+        };
+
+        fetchPost();
+    }, [id]);
+
+    const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
         if (post) {
-            onUpdate(post.id, title, content);
+            try {
+                const response = await fetch(`/api/posts/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(post),
+                });
+
+                if (response.ok) {
+                    // Post updated successfully
+                    router.push('/'); // Redirect back to the posts page after updating
+                } else {
+                    const data = await response.json();
+                    setError(data.message || 'Error updating post');
+                }
+            } catch (error) {
+                setError('Error updating post');
+            }
         }
     };
 
-    if (!post) return <p>Loading post...</p>; // Show loading if post is not yet loaded
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>{error}</p>;
 
     return (
-        <form onSubmit={handleSubmit} className="mb-4">
-            <h2 className="text-xl font-semibold">Editing Post</h2>
-            <div>
-                <label className="block">Title</label>
-                <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    required
-                    className="border p-2 rounded w-full"
-                />
-            </div>
-            <div className="mt-4">
-                <label className="block">Content</label>
-                <textarea
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    required
-                    className="border p-2 rounded w-full"
-                ></textarea>
-            </div>
-            <button
-                type="submit"
-                className="mt-4 bg-blue-500 text-white p-2 rounded"
-            >
-                Update Post
-            </button>
-            <button
-                type="button"
-                onClick={onCancel}
-                className="mt-4 ml-2 bg-gray-500 text-white p-2 rounded"
-            >
-                Cancel
-            </button>
-        </form>
+        <div className="p-4">
+            <h1 className="text-2xl font-bold mb-4">Edit Post</h1>
+            <form onSubmit={handleUpdate}>
+                <div className="mb-4">
+                    <label htmlFor="title" className="block mb-2">Title</label>
+                    <input
+                        type="text"
+                        id="title"
+                        value={post?.title || ''}
+                        onChange={(e) => setPost((prevPost) => ({ ...prevPost!, title: e.target.value }))} // Use non-null assertion to avoid null error
+                        className="border p-2 w-full"
+                        required
+                    />
+                </div>
+                <div className="mb-4">
+                    <label htmlFor="content" className="block mb-2">Content</label>
+                    <textarea
+                        id="content"
+                        value={post?.content || ''}
+                        onChange={(e) => setPost((prevPost) => ({ ...prevPost!, content: e.target.value }))} // Use non-null assertion to avoid null error
+                        className="border p-2 w-full"
+                        required
+                    />
+                </div>
+                <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">Update Post</button>
+            </form>
+        </div>
     );
 }
