@@ -1,20 +1,19 @@
-// pages/EditPost/[id].tsx
+// app/EditPost/[id]/page.tsx
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
-export default function EditPost() {
+export default function EditPost({ params }: { params: { id: string } }) {
     const router = useRouter();
-    const { id } = router.query; // Get the post ID from the URL
+    const postId = params.id; // Accessing post ID from params
     const [post, setPost] = useState<{ title: string; content: string } | null>(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        // Fetch the existing post data when the component mounts
         const fetchPost = async () => {
-            if (id) {
+            if (postId) {
                 try {
-                    const response = await fetch(`/api/posts/${id}`);
+                    const response = await fetch(`/api/posts/${postId}`);
                     const data = await response.json();
 
                     if (response.ok) {
@@ -31,13 +30,13 @@ export default function EditPost() {
         };
 
         fetchPost();
-    }, [id]);
+    }, [postId]);
 
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
         if (post) {
             try {
-                const response = await fetch(`/api/posts/${id}`, {
+                const response = await fetch(`/api/posts/${postId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
