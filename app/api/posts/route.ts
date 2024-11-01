@@ -3,18 +3,18 @@ import {  PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function POST(request : NextRequest, response : NextResponse){
+export async function POST(request : NextRequest){
     try {
 
         const {title, content, authorId} = await request.json();
 
-        //checking if fields are empty
-        if (!title || !content) {
-            return NextResponse.json({
-                status: 400,
-                message: "Title and content are required.",
-            });
-        }
+        // //checking if fields are empty
+        // if (!title || !content) {
+        //     return NextResponse.json({
+        //         status: 400,
+        //         message: "Title and content are required.",
+        //     });
+        // }
        // Create the post and connect it to the existing user
        const data = await prisma.post.create({
         data: {

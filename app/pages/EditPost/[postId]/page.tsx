@@ -1,6 +1,8 @@
+// app/EditPost/[postId]/page.tsx
 "use client";
-// UpdatePost.tsx
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 
 interface Post {
     id: number;
@@ -9,14 +11,29 @@ interface Post {
 }
 
 interface UpdatePostProps {
-    post: Post | null;
     onUpdate: (id: number, title: string, content: string) => void;
     onCancel: () => void;
 }
 
-const EditPost: React.FC<UpdatePostProps> = ({ post, onUpdate, onCancel }) => {
-    const [title, setTitle] = useState(post ? post.title : '');
-    const [content, setContent] = useState(post ? post.content : '');
+// Component function for the edit page
+export default function EditPost({ onUpdate, onCancel }: UpdatePostProps) {
+    const { postId } = useParams(); // Get the postId from the dynamic route
+    const [post, setPost] = useState<Post | null>(null);
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+
+    // Fetch or set the post based on postId
+    useEffect(() => {
+        // Assuming a fetchPost function retrieves post data by postId
+        async function fetchPost() {
+            const response = await fetch(`/api/posts/${postId}`);
+            const postData = await response.json();
+            setPost(postData);
+            setTitle(postData.title);
+            setContent(postData.content);
+        }
+        if (postId) fetchPost();
+    }, [postId]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -25,7 +42,7 @@ const EditPost: React.FC<UpdatePostProps> = ({ post, onUpdate, onCancel }) => {
         }
     };
 
-    if (!post) return null; // Return null if there's no post to update
+    if (!post) return <p>Loading post...</p>; // Show loading if post is not yet loaded
 
     return (
         <form onSubmit={handleSubmit} className="mb-4">
@@ -64,6 +81,4 @@ const EditPost: React.FC<UpdatePostProps> = ({ post, onUpdate, onCancel }) => {
             </button>
         </form>
     );
-};
-
-export default EditPost;
+}

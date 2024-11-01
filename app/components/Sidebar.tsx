@@ -1,68 +1,55 @@
 import Link from "next/link";
-import { FaHome, FaCog, FaClipboardList, FaSignOutAlt, FaList } from "react-icons/fa";
+import { FaHome, FaCog, FaClipboardList, FaSignOutAlt, FaList, FaTimes } from "react-icons/fa";
 
-// an interface
-interface SideBarPops{
+// Interface for Sidebar props
+interface SideBarProps {
     isOpen: boolean;
     toggleSideBar: () => void;
 }
- const SideBar:React.FC<SideBarPops> = ({isOpen, toggleSideBar}) => {
 
-
-    return(
+const SideBar: React.FC<SideBarProps> = ({ isOpen, toggleSideBar }) => {
+    return (
         <>
-        {/* <div className="flex flex-col bg-[#008080] border mb-2 h-screen w-1/4 p-5 space-y-8 items-center "> */}
-        <div className={`flex flex-col p-5 fixed inset-y-0 left-0 z-20 md:w-1/4 bg-[#008080] transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0`}>
-            <div className="text-white text-2xl font-bold text-center">
-                <h1 className="text-white">Blog Post Platform</h1>
-            </div>
-                {/* Links */}
-                <div className="m-16 flex-grow">
-                    <ul className="text-white space-y-10 items-start justify-between flex flex-col">
-                        <li className="flex flex-row">
-                        <FaHome className="mx-2 h-6 "/>
-                        <Link href={'/' } className="mx-5">
-                            Home                    
-                        </Link>
-                        </li>
-                        
-                        <li className="flex flex-row">
-                        <FaClipboardList className="mx-2 h-5 "/>
-                        <Link href={'/'} className="mx-5">
-                            Posts                    
-                        </Link>
-                        </li>
-
-                        <li className="flex flex-row">
-                        <FaCog className="mx-2 h-6 "/>
-                        <Link href={'/'} className="mx-5">
-                            Settings                   
-                        </Link>
-                        </li>
-
-                        <li className="flex flex-row">
-                        <FaList className="mx-2 h-6 "/>
-                        <Link href={'/'} className="mx-5">
-                            Categories                   
-                        </Link>
-                        </li>                  
-                    </ul>
-
+            {/* Sidebar container */}
+            <div className={`fixed inset-y-0 left-0 z-20 bg-[#008080] p-5 flex flex-col h-full items-center transform md:relative md:translate-x-0 transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:w-1/4`}>
+                {/* Close button on small screens */}
+                <button onClick={toggleSideBar} className="absolute top-5 right-5 text-white md:hidden">
+                    <FaTimes className="h-6 w-6" />
+                </button>
+                
+                <div className="text-white text-2xl mt-6 font-bold text-center mb-8">
+                    <h1>Blog Post Platform</h1>
                 </div>
-            <div className="text-white flex text-center justify-center mb-2  position-bottom mt-5">
-                <li className="flex flex-row ">
-                <FaSignOutAlt  className="mx-2 h-6"/>
-                <Link href={'/'} className="mx-5">
-                    Logout
-                </Link>
-                </li>
+                {/* Links */}
+                <div className="flex-grow">
+                    <ul className="text-white space-y-10">
+                        <li className="flex items-center">
+                            <FaHome className="mx-2 h-6" />
+                            <Link href="/" className="ml-2">Home</Link>
+                        </li>
+                        <li className="flex items-center">
+                            <FaClipboardList className="mx-2 h-5" />
+                            <Link href="/" className="ml-2">Posts</Link>
+                        </li>
+                        <li className="flex items-center">
+                            <FaCog className="mx-2 h-6" />
+                            <Link href="/" className="ml-2">Settings</Link>
+                        </li>
+                        <li className="flex items-center">
+                            <FaList className="mx-2 h-6" />
+                            <Link href="/" className="ml-2">Categories</Link>
+                        </li>
+                    </ul>
+                </div>
+                {/* Logout button positioned at the bottom */}
+                <div className="mt-4 text-white flex items-center justify-center mb-4">
+                    <FaSignOutAlt className="mx-2 h-6" />
+                    <Link href="/" className="ml-2">Logout</Link>
+                </div>
             </div>
-            <button onClick={toggleSideBar} className="block md:hidden mt-4 text-gray-400 text-sm">
-                Close Side bar
-            </button>
-        </div>
         </>
     );
 }
 
 export default SideBar;
+
