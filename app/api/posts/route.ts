@@ -8,13 +8,6 @@ export async function POST(request : NextRequest){
 
         const {title, content, authorId} = await request.json();
 
-        // //checking if fields are empty
-        // if (!title || !content) {
-        //     return NextResponse.json({
-        //         status: 400,
-        //         message: "Title and content are required.",
-        //     });
-        // }
        // Create the post and connect it to the existing user
        const data = await prisma.post.create({
         data: {
@@ -45,6 +38,7 @@ export async function POST(request : NextRequest){
     }
 
 }
+
 export async function GET() {
     try {
         const posts = await  prisma.post.findMany({

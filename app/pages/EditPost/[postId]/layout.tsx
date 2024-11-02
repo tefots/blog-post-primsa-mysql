@@ -3,8 +3,9 @@ export default function ProductDetailsLayout({children,}: {children: React.React
 
     return (
         <>
+        <h2 className="bg-slate-300">Edit Post</h2>
         {children}
-        <h2 className="bg-slate-300">Products features </h2>
+
         
         </>
     );
