@@ -1,11 +1,10 @@
-import Image from "next/image";
-import SideBar from "./components/Sidebar";
-import Dashboard from "./pages/Dashboard/page";
+
+import Welcome from "./pages/Welcome/page";
 
 export default function Home() {
   return (
     <div>
-      <Dashboard />
+      <Welcome />
     </div>
   );
 }
