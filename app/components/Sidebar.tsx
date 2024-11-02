@@ -5,9 +5,10 @@ import { FaHome, FaCog, FaClipboardList, FaSignOutAlt, FaList, FaTimes } from "r
 interface SideBarProps {
     isOpen: boolean;
     toggleSideBar: () => void;
+    onNavigate: (page: string) => void; // Add onNavigate prop
 }
 
-const SideBar: React.FC<SideBarProps> = ({ isOpen, toggleSideBar }) => {
+const SideBar: React.FC<SideBarProps> = ({ isOpen, toggleSideBar, onNavigate }) => {
     return (
         <>
             {/* Sidebar container */}
@@ -23,17 +24,13 @@ const SideBar: React.FC<SideBarProps> = ({ isOpen, toggleSideBar }) => {
                 {/* Links */}
                 <div className="flex-grow">
                     <ul className="text-white space-y-10">
-                        <li className="flex items-center">
+                        <li className="flex items-center" onClick={() => onNavigate('posts')}>
                             <FaHome className="mx-2 h-6" />
-                            <Link href="/" className="ml-2">Home</Link>
+                            <span className="ml-2 cursor-pointer">Posts</span>
                         </li>
-                        <li className="flex items-center">
-                            <FaClipboardList className="mx-2 h-5" />
-                            <Link href="/" className="ml-2">Posts</Link>
-                        </li>
-                        <li className="flex items-center">
+                        <li className="flex items-center" onClick={() => onNavigate('settings')}>
                             <FaCog className="mx-2 h-6" />
-                            <Link href="/" className="ml-2">Settings</Link>
+                            <span className="ml-2 cursor-pointer">Settings</span>
                         </li>
                         <li className="flex items-center">
                             <FaList className="mx-2 h-6" />
@@ -52,4 +49,3 @@ const SideBar: React.FC<SideBarProps> = ({ isOpen, toggleSideBar }) => {
 }
 
 export default SideBar;
-
