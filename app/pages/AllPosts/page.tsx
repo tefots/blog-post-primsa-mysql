@@ -1,3 +1,4 @@
+"use client";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -99,7 +100,7 @@ export default function AllPosts() {
             {posts.length === 0 ? (
                 <p>No posts available.</p>
             ) : (
-                <ul className="space-y-4">
+                <ul className=" space-y-4">
                     {posts.map((post) => (
                         <li key={post.id} className="border p-4 rounded-md shadow-md">
                             <h2 className="text-xl font-semibold">{post.title}</h2>

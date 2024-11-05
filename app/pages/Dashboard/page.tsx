@@ -4,7 +4,7 @@ import NavBar from "@/app/components/NavBar";
 import SideBar from "@/app/components/Sidebar";
 import { useState } from "react";
 import AllPosts from "../AllPosts/page";
-import Settings from "../Settings/page"; // Assuming you have a Settings component
+import Settings from "../Settings/page";
 
 const DashBoard: React.FC = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -34,7 +34,8 @@ const DashBoard: React.FC = () => {
 
                 {/* Content - Responsive layout for posts */}
                 <main className="flex-1 overflow-auto p-4">
-                    {currentPage === 'posts' ? <AllPosts /> : <Settings />}
+                    {/* if statement to check which page is open */}
+                    {currentPage === 'posts' ? <AllPosts /> : <Settings />} 
                 </main>
             </div>
 
