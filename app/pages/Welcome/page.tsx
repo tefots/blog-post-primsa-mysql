@@ -1,10 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import AllPosts from "../AllPosts/page";
+import NavBar from "@/app/components/NavBar";
 export default function Welcome(){
 
     return (
         <>
+        <NavBar />
         <div className="md:h-screen flex flex-col sapce-y-7 ">
             <div className="relative w-full h-screen">
                 <Image 

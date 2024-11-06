@@ -30,7 +30,7 @@ const DashBoard: React.FC = () => {
             {/* Main Content Area */}
             <div className="flex flex-1 flex-col h-full overflow-auto">
                 {/* Navbar */}
-                <NavBar toggleSideBar={toggleSideBar} />
+                <NavBar  />
 
                 {/* Content - Responsive layout for posts */}
                 <main className="flex-1 overflow-auto p-4">
