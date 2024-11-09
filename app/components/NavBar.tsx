@@ -1,4 +1,4 @@
-import { FaSearch, FaPlus } from 'react-icons/fa'; // Import FaPlus
+import { FaSearch, FaPlus, FaAirbnb } from 'react-icons/fa'; // Import FaPlus
 import Link from "next/link";
 import Image from 'next/image';
 
@@ -21,7 +21,7 @@ export default function NavBar(){  return (
                         </div>
                         <input 
                             type="text" 
-                            className="block p-2 pl-10 w-full bg-gray-50 text-black rounded-xl focus:pl-3"
+                            className="hidden block p-2 pl-10 w-full bg-gray-50 text-black rounded-xl focus:pl-3"
                             placeholder="Search" 
                         />
                     </div>
@@ -38,31 +38,27 @@ export default function NavBar(){  return (
                             <FaPlus /> {/* Plus icon */}
                         </Link>
                     </div>
+
+                    <div className="md:hidden ml-8 items-end ">
+                        <Link href="#" passHref className=" text-green-400 font-bold">
+                               <FaAirbnb  />
+                        </Link>
+                    </div>
                     <div className="links px-2 items-center">
                         <ul className="px-5 space-x-4 flex gap-x-3 text-white ">
-                            <li>
+                            
                                 <Link href={'#'} className="">
                                     Blogs
-                                </Link>
-                            </li>
-                            <li>
+                                </Link>                           
+                            
                                 <Link href={'#'} className="">
                                     About
-                                </Link>
-                            </li>
-
-                            <li>
+                                </Link>                          
+                            
                                 <Link href={'#'} className="">
-                                    Signin
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href={'#'} className="">
-                                    Signup
-                                </Link>
-                            </li>
-                            <li className="h-5 w-10 ">
-                                <Link href={'#'} className="">
+                                    Sigout
+                                </Link>                            
+                                <Link href={'#'} className="h-5 w-10">
                                     <Image 
                                     alt="profile-image"
                                     width={50}
@@ -74,7 +70,7 @@ export default function NavBar(){  return (
 
                                     </Image>
                                 </Link>
-                            </li>
+                            
                         </ul>
 
                     </div>
