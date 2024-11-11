@@ -29,7 +29,7 @@ export default function Navbar() {
   }
 
   if (status === 'unauthenticated') {
-    router.push('pages/Auth');
+    console.log('User not authenticated')
 
   }
   else{
