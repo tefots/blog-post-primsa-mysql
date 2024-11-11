@@ -115,7 +115,7 @@ export default function Navbar() {
                 </>
               )}
             </div>
-                        </div>
+          </div>
 
           <div className="flex items-center">
             {/* User profile picture for desktop */}
@@ -137,7 +137,7 @@ export default function Navbar() {
                     />
                   </button>
                 </div>
-                    </div>
+              </div>
             )}
 
             {/* Mobile menu button */}
@@ -159,55 +159,81 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-                    </div>
-                    {/* Plus icon for small screens */}
-                    <div className="md:hidden ml-2">
-                        <Link href='/pages/CreatePost' className="text-green-400 text-2xl">
-                            <FaPlus /> {/* Plus icon */}
-                        </Link>
-                    </div>
-                    <div className="links px-2 items-center">
-                        <ul className="px-5 space-x-4 flex gap-x-3 text-white ">
-                            <li>
-                                <Link href={'#'} className="">
-                                    Blogs
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href={'#'} className="">
-                                    About
-                                </Link>
-                            </li>
+      </div>
 
-                            <li>
-                                <Link href={'#'} className="">
-                                    Signin
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href={'#'} className="">
-                                    Signup
-                                </Link>
-                            </li>
-                            <li className="h-5 w-10 ">
-                                <Link href={'#'} className="">
-                                    <Image 
-                                    alt="profile-image"
-                                    width={50}
-                                    height={50}
-                                    src="/pictures/Hackathon5.png"
-                                    layout="responsive"
-                                    className="object-cover  object-center"
-                                    >
+      {/* Mobile menu, show/hide based on menu state */}
+      <div
+        className={`sm:hidden ${isOpen ? 'block' : 'hidden'}`}
+        id="mobile-menu"
+      >
+        <div className="pt-2 pb-3 space-y-1">
+          <Link
+            href="/"
+            className="bg-primary border-primary text-primary-foreground block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+          >
+            Home
+          </Link>
+          <Link
+            href="/about"
+            className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+            onClick={handlleBlogs}
+          >
+            Blogs
+          </Link>
+          {isLoggedIn ? (
+            <>
+              <Link
+                href="/services"
+                className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+              >
+                Write Blog
+              </Link>
+              <Link
+                href="/contact"
+                className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+              >
+                Contact
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/signin"
+                className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/signup"
+                className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
+        </div>
 
-                                    </Image>
-                                </Link>
-                            </li>
-                        </ul>
-
-                    </div>
-                </div>
-            </nav>
-        </>
-    );
+        {/* User profile picture for mobile */}
+        {isLoggedIn && (
+          <div className="pt-4 pb-3 border-t border-gray-200">
+            <div className="flex items-center px-4">
+              <div className="flex-shrink-0">
+                <Image
+                  className="h-10 w-10 rounded-full"
+                  src="/placeholder.svg?height=40&width=40"
+                  alt="User profile"
+                  width={40}
+                  height={40}
+                />
+              </div>
+              <div className="ml-3">
+                <div className="text-base font-medium text-gray-800">User Name</div>
+                <div className="text-sm font-medium text-gray-500">user@example.com</div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </nav>
+  )
 }
