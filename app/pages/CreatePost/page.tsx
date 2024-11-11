@@ -58,7 +58,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ isCreatePostClicked, togglePost
                             value={title} 
                             onChange={(e) => setTitle(e.target.value)} 
                             required 
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-500 p-2 text-black"
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-500 p-2 "
                         />
                     </div>
                     <div>
@@ -69,7 +69,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ isCreatePostClicked, togglePost
                             onChange={(e) => setContent(e.target.value)} 
                             required 
                             rows={10}
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-500 p-2 text-black"
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-500 p-2 "
                         />
                     </div>
                     <div className="flex justify-between">

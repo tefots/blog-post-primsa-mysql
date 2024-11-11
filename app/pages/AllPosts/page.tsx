@@ -95,7 +95,7 @@ export default function AllPosts() {
     if (loading) return <p>Loading...</p>;
 
     return (
-        <div className="p-4">
+        <div id="posts" className="p-4">
             <h1 className="text-2xl font-bold mb-4">All Posts</h1>
             {posts.length === 0 ? (
                 <p>No posts available.</p>
