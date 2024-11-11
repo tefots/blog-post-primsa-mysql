@@ -1,43 +1,38 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation';
-
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 export default function Navbar() {
-
   const pathname = usePathname();
   const router = useRouter();
 
-  const [isOpen, setIsOpen] = useState(false)
-  const [isLoggedIn, setIsLoggedIn] = useState(false) // This would typically come from your auth state
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-
-  //session management
-  const { data: session, status, update } = useSession();
-  //loging the user data
+  // session management
+  const { data: session, status } = useSession();
   console.log(session?.user);
-  
   console.log(status);
+
+  // Handle session changes to update isLoggedIn
+  useEffect(() => {
+    if (status === 'authenticated') {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [status]); // Only run when status changes
 
   if (status === 'loading') {
     return <div>Loading...</div>;
   }
 
-  if (status === 'unauthenticated') {
-    router.push('pages/Auth');
-
-  }
-  else{
-    setIsLoggedIn(true);
-  }
-
- // scrolling to section on navigation
-  const handlleBlogs = () => {
+  const handleBlogs = () => {
     if (pathname === '/pages/AllPosts') {
       // Directly scroll to section if already on home page
       document.getElementById('posts')?.scrollIntoView({ behavior: 'smooth' });
@@ -45,26 +40,26 @@ export default function Navbar() {
       // Navigate to home with query for scrolling
       router.push('/?scrollTo=posts');
     }
-
   };
-  console.log(isLoggedIn);
+
   const toggleMenu = () => {
-    setIsOpen(!isOpen)
-  }
+    setIsOpen(!isOpen);
+  };
 
   return (
-    <nav className="bg-white shadow-md">
+    <nav className="bg-white shadow-md sticky">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
               {/* Logo */}
               <Link href="/" className="text-xl font-bold text-gray-800">
-                <Image 
-                src={'/pictures/bs_logo.png'}
-                height={78}
-                width={78}
-                alt='Logo'/>
+                <Image
+                  src={'/pictures/bs_logo.png'}
+                  height={78}
+                  width={78}
+                  alt='Logo'
+                />
               </Link>
             </div>
 
@@ -77,9 +72,8 @@ export default function Navbar() {
                 Home
               </Link>
               <button
-
                 className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                onClick={handlleBlogs}
+                onClick={handleBlogs}
               >
                 Blogs
               </button>
@@ -128,9 +122,10 @@ export default function Navbar() {
                     aria-label="User menu"
                     aria-haspopup="true"
                   >
+                    {/* Show user's profile picture or a placeholder */}
                     <Image
                       className="h-8 w-8 rounded-full"
-                      src="/placeholder.svg?height=32&width=32"
+                      src={session?.user?.image || '/placeholder.svg?height=32&width=32'}
                       alt="User profile"
                       width={32}
                       height={32}
@@ -176,7 +171,7 @@ export default function Navbar() {
           <Link
             href="/about"
             className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-            onClick={handlleBlogs}
+            onClick={handleBlogs}
           >
             Blogs
           </Link>
@@ -213,27 +208,31 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* User profile picture for mobile */}
+        {/* User profile picture and info for mobile */}
         {isLoggedIn && (
           <div className="pt-4 pb-3 border-t border-gray-200">
             <div className="flex items-center px-4">
               <div className="flex-shrink-0">
                 <Image
                   className="h-10 w-10 rounded-full"
-                  src="/placeholder.svg?height=40&width=40"
+                  src={session?.user?.image || '/placeholder.svg?height=40&width=40'}
                   alt="User profile"
                   width={40}
                   height={40}
                 />
               </div>
               <div className="ml-3">
-                <div className="text-base font-medium text-gray-800">User Name</div>
-                <div className="text-sm font-medium text-gray-500">user@example.com</div>
+                <div className="text-base font-medium text-gray-800">
+                  {session?.user?.name || 'User Name'}
+                </div>
+                <div className="text-sm font-medium text-gray-500">
+                  {session?.user?.email || 'user@example.com'}
+                </div>
               </div>
             </div>
           </div>
         )}
       </div>
     </nav>
-  )
+  );
 }
