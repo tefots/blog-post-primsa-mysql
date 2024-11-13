@@ -10,26 +10,23 @@ interface Post {
     author: {
         username: string;
     };
+    imageUrl?: string; // Optional image URL for the blog post
 }
 
 export default function AllPosts() {
-
     const router = useRouter();
     const [posts, setPosts] = useState<Post[]>([]);
     const [loading, setLoading] = useState(true);
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // Track if user is logged in
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    // Check if the user is logged in (for demonstration, replace with actual authentication check)
     useEffect(() => {
         async function checkLoginStatus() {
-            // Replace this with actual authentication check (e.g., an API call or context value)
             const response = await fetch('/api/auth/check');
             if (response.ok) {
                 const data = await response.json();
-                setIsLoggedIn(data.isLoggedIn); // Set based on the API response
+                setIsLoggedIn(data.isLoggedIn);
             }
         }
-        
         checkLoginStatus();
     }, []);
 
@@ -41,34 +38,11 @@ export default function AllPosts() {
                     'Content-Type': 'application/json',
                 }
             });
-    
             if (!res.ok) {
                 const data = await res.json();
                 console.error("Error deleting post:", data.message);
             } else {
-                console.log("Post deleted successfully");
                 setPosts(prevPosts => prevPosts.filter(post => post.id !== id));
-            }
-        } catch (error) {
-            console.error("Error:", error);
-        }
-    };
-    
-    const handleUpdate = async (id: number, title: string, content: string) => {
-        try {
-            const res = await fetch(`/api/posts/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ title, content }),
-            });
-
-            if (!res.ok) {
-                console.error("Error updating post");
-            } else {
-                const data = await res.json();
-                console.log("Post updated successfully:", data.post);
             }
         } catch (error) {
             console.error("Error:", error);
@@ -91,38 +65,47 @@ export default function AllPosts() {
                 setLoading(false);
             }
         }
-
         fetchPosts();
     }, []);
 
     if (loading) return <p>Loading...</p>;
 
     return (
-        <div id="posts" className="p-4">
-            <h1 className="text-2xl font-bold mb-4">All Posts</h1>
-            {posts.length === 0 ? (
-                <p>No posts available.</p>
-            ) : (
-                <ul className="space-y-4">
-                    {posts.map((post) => (
-                        <li key={post.id} className="border p-4 rounded-md shadow-md">
-                            <h2 className="text-xl font-semibold">{post.title}</h2>
-                            <p className="mt-2">{post.content}</p>
-                            <p className="text-gray-600 text-sm">
-                                By {post.author.username} on {new Date(post.createdAt).toLocaleDateString()}
-                            </p>
-                            
-                            {/* Conditionally render buttons based on login status */}
-                            {isLoggedIn && (
-                                <div className="flex justify-end gap-3 mt-4 text-sm">
-                                    <button className="font-semibold" onClick={() => router.push(`/pages/EditPost/${post.id}`)}>Update</button>
-                                    <button className="font-semibold" onClick={() => handleDelete(post.id)}>Delete</button>
-                                </div>
-                            )}
-                        </li>
-                    ))}
-                </ul>
-            )}
+        <div id="posts" className="p-6 bg-gray-100 min-h-screen">
+            <h1 className="text-3xl font-bold mb-6 text-center">All Posts</h1>
+            <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                {posts.length === 0 ? (
+                    <p>No posts available.</p>
+                ) : (
+                    posts.map((post) => (
+                        <div key={post.id} className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
+                            {/* Blog Image */}
+                            <div className="w-full h-48 bg-gray-200">
+                                {post.imageUrl ? (
+                                    <img src={post.imageUrl} alt={post.title} className="w-full h-full object-cover" />
+                                ) : (
+                                    <p className="text-gray-500 flex items-center justify-center h-full">Image Unavailable</p>
+                                )}
+                            </div>
+
+                            {/* Post Content */}
+                            <div className="p-6">
+                                <h2 className="text-2xl font-semibold text-gray-800">{post.title}</h2>
+                                <p className="text-gray-600 text-sm mb-4">By {post.author.username} on {new Date(post.createdAt).toLocaleDateString()}</p>
+                                <p className="text-gray-700 mb-4">{post.content}</p>
+                                
+                                {/* Conditional Buttons for Update and Delete */}
+                                {isLoggedIn && (
+                                    <div className="flex justify-end gap-4 mt-4 text-sm">
+                                        <button className="text-blue-500 font-semibold hover:text-blue-700" onClick={() => router.push(`/pages/EditPost/${post.id}`)}>Update</button>
+                                        <button className="text-red-500 font-semibold hover:text-red-700" onClick={() => handleDelete(post.id)}>Delete</button>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
         </div>
     );
 }
