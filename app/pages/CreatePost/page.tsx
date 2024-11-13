@@ -5,6 +5,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { CldImage, CldUploadWidget } from 'next-cloudinary';
+
+
 interface CreatePostProps {
     isCreatePostClicked: boolean;
     togglePostsCreation: () => void;
@@ -13,17 +16,24 @@ interface CreatePostProps {
 const CreatePost: React.FC<CreatePostProps> = ({ isCreatePostClicked, togglePostsCreation }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [image, setImage] = useState<File | null>(null); // Image state to store the selected file
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        // Use FormData to handle file upload
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("content", content);
+        formData.append("authorId", "3");
+        if (image) {
+            formData.append("image", image); // Add the image file to the form data
+        }
+
         const res = await fetch('/api/posts', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ title, content, authorId: 3 }),
+            body: formData, // Send FormData instead of JSON
         });
 
         const data = await res.json();
@@ -75,9 +85,23 @@ const CreatePost: React.FC<CreatePostProps> = ({ isCreatePostClicked, togglePost
                             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-500 p-2 "
                         />
                     </div>
+                    <div>
+                        {/* the use of cloudinary to uplaod image */}
+                                                
+                        <CldUploadWidget uploadPreset="tsiu_blog_preset">
+                        {({ open }) => {
+                            return (
+                            <button onClick={() => open()}>
+                                <span className="text-blue-400">Upload an Image</span>
+                            </button>
+                            );
+                        }}
+                        </CldUploadWidget>
+                        
+                    </div>
                     <div className="flex justify-between">
                         <Link href="/" className="text-blue-600 hover:underline">
-                            Upload Image
+                            Back to Home
                         </Link>
                         <button 
                             type="submit" 
