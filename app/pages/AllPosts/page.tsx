@@ -57,7 +57,8 @@ export default function AllPosts() {
                 if (data.status === 201) {
                     setPosts(data.posts);
                 } else {
-                    console.error('Error fetching posts:', data.message);
+                   const err = data.status === 500;
+                   console.log("Error:", err);
                 }
             } catch (error) {
                 console.error('Error fetching posts:', error);
@@ -75,7 +76,7 @@ export default function AllPosts() {
             <h1 className="text-3xl font-bold mb-6 text-center">All Posts</h1>
             <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {posts.length === 0 ? (
-                    <p>No posts available.</p>
+                    <p className="text-center">No posts available.</p>
                 ) : (
                     posts.map((post) => (
                         <div key={post.id} className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
