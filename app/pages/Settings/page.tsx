@@ -1,3 +1,6 @@
+"use client";
+
+import Navbar from '@/app/components/NavBar';
 import { useState, useEffect } from 'react';
 
 const Settings: React.FC = () => {
@@ -13,7 +16,9 @@ const Settings: React.FC = () => {
     };
 
     return (
-        <div className="p-4">
+        <>
+        <Navbar />
+        <div className="flex flex-col my-20 items-center p-4">
             <h1 className="text-2xl mb-4">Settings</h1>
             <div className="flex items-center">
                 <span className="mr-2">{isDarkTheme ? 'Dark Theme' : 'Light Theme'}</span>
@@ -25,6 +30,7 @@ const Settings: React.FC = () => {
                 </button>
             </div>
         </div>
+        </>
     );
 }
 

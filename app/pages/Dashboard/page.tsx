@@ -1,7 +1,6 @@
 "use client";
 
 import NavBar from "@/app/components/NavBar";
-import SideBar from "@/app/components/Sidebar";
 import { useState } from "react";
 import AllPosts from "../AllPosts/page";
 import Settings from "../Settings/page";
@@ -20,22 +19,14 @@ const DashBoard: React.FC = () => {
 
     return (
         <div className="relative flex w-full h-screen">
-            {/* sidebar */}
-            <SideBar 
-                isOpen={isSidebarOpen} 
-                toggleSideBar={toggleSideBar} 
-                onNavigate={handleNavigation} // Pass down the navigation function
-            />
-
+          
             {/* Main Content Area */}
             <div className="flex flex-1 flex-col h-full overflow-auto">
                 {/* Navbar */}
                 <NavBar  />
 
-                {/* Content - Responsive layout for posts */}
                 <main className="flex-1 overflow-auto p-4">
-                    {/* if statement to check which page is open */}
-                    {currentPage === 'posts' ? <AllPosts /> : <Settings />} 
+                    <AllPosts />  
                 </main>
             </div>
 

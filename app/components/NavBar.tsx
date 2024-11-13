@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import Settings from '../pages/Settings/page'
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -33,15 +34,20 @@ export default function Navbar() {
   }
 
   const handleBlogs = () => {
-    if (pathname === '/pages/AllPosts') {
-      // Directly scroll to section if already on home page
-      document.getElementById('posts')?.scrollIntoView({ behavior: 'smooth' });
+    if (isLoggedIn) {
+      // Redirect to AllBlogs in Dashboard if the user is logged in
+      router.push('/pages/Dashboard');
     } else {
-      // Navigate to home with query for scrolling
-      router.push('/?scrollTo=posts');
+      // If not logged in, scroll to the posts section on the homepage
+      if (pathname === '/') {
+        document.getElementById('posts')?.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        // Navigate to home with query for scrolling
+        router.push('/?scrollTo=posts');
+      }
     }
   };
-
+  
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -65,15 +71,15 @@ export default function Navbar() {
 
             {/* Desktop menu */}
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-             
-              <button
+                        
+              {isLoggedIn ? (
+                <>
+                 <button
                 className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                 onClick={handleBlogs}
               >
                 Blogs
               </button>
-              {isLoggedIn ? (
-                <>
                   <Link
                     href="/pages/CreatePost"
                     className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
@@ -126,6 +132,11 @@ export default function Navbar() {
                       height={32}
                     />
                   </button>
+                  <div>
+                      <Link href={'/pages/Settings'} passHref>
+                      Settings
+                      </Link>
+                  </div>
                 </div>
               </div>
             )}
@@ -172,6 +183,9 @@ export default function Navbar() {
           </button>
           {isLoggedIn ? (
             <>
+              <Link href="/pages/Dashboard" className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                  Home
+              </Link>
               <Link
                 href="/pages/CreatePost"
                 className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
