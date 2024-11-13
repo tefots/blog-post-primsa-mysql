@@ -3,7 +3,7 @@
 import NavBar from "@/app/components/NavBar";
 import { useState } from "react";
 import AllPosts from "../AllPosts/page";
-import Settings from "../Settings/page";
+
 
 const DashBoard: React.FC = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);

@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import Settings from '../pages/Settings/page'
+
 
 export default function Navbar() {
   const pathname = usePathname();

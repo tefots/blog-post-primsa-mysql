@@ -1,4 +1,5 @@
 "use client";
+import Navbar from "@/app/components/NavBar";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -36,7 +37,9 @@ const CreatePost: React.FC<CreatePostProps> = ({ isCreatePostClicked, togglePost
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+        <>
+        <Navbar />
+        <div className="flex items-center justify-center min-h-screen bg-gray-100 ">
             <div className="relative h-screen w-full">
                 <Image
                     src={'/pictures/new-blog-post.jpg'}
@@ -86,6 +89,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ isCreatePostClicked, togglePost
                 </form>
             </div>
         </div>
+        </>
     );
 }
 
