@@ -21,7 +21,7 @@ export default function Welcome(){
                 <h1 className="text-3xl border-purple-400  text-white font-semibold">Intresting blogs you can never regret reading</h1>
 
                 <div className="mt-4">
-                    <Link className="text-xl font-semibold bg-purple-500 rounded-2xl p-5 animate-bounce transition-3000 ease-in-out" href={'/pages/Dashboard'}>
+                    <Link className="text-xl font-semibold bg-purple-500 rounded-2xl p-5 animate-bounce transition-3000 ease-in-out" href={'/pages/Auth'}>
                         Get Started
                     </Link>
                 </div>
