@@ -7,7 +7,7 @@ export default function Welcome(){
     return (
         <>
         <NavBar />
-        <div className="relative md:h-[60vh] h-[250px] flex flex-col sapce-y-7 ">
+        <div className="relative md:h-[80vh] h-[250px] flex flex-col sapce-y-7 ">
             <div className="relative bg-black w-full h-screen">
                 <Image 
                 src={'/pictures/post.jpeg'}
