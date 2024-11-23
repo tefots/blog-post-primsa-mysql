@@ -74,9 +74,11 @@ export default function AllPosts() {
         <div id="posts" className="p-6 bg-gray-100 min-h-screen">
             <h1 className="text-3xl font-bold mb-6 text-center">All Posts</h1>
             <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                {/* checking if there are available posts */}
                 {posts.length === 0 ? (
-                    <p>No posts available.</p>
+                    <p className="font-medium text-xl m-6 p-6">No posts available.</p>
                 ) : (
+                    // here is the else part of when posts are available
                     posts.map((post) => (
                         <div key={post.id} className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
                             {/* Blog Image */}
