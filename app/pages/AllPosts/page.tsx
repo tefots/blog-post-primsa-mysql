@@ -57,7 +57,8 @@ export default function AllPosts() {
                 if (data.status === 201) {
                     setPosts(data.posts);
                 } else {
-                    console.error('Error fetching posts:', data.message);
+                   const err = data.status === 500;
+                   console.log("Error:", err);
                 }
             } catch (error) {
                 console.error('Error fetching posts:', error);
